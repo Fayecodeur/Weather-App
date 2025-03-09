@@ -12,7 +12,7 @@
 body {
   background: #aee0ff; /* Light blue background */
   color: #333; /* Dark text for readability */
-  padding-top: 1rem;
+  padding-top: .5rem;
 }
 
 /* Container */
@@ -26,7 +26,7 @@ body {
   background: #e5f6ff; /* Lighter blue background */
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  padding: 1.5rem;
+  padding: 1rem;
   animation: fadeIn 0.5s ease-in-out;
 }
 
