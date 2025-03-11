@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import WeatherForm from "./WeatherForm.jsx";
 import WeatherInfos from "./WeatherInfos.jsx";
-import Loader from "./Loader.jsx";
+import Loader from "./loader.jsx";
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
   const fetchWeatherData = async (city = "dakar") => {
