@@ -2,28 +2,37 @@ import { useEffect, useState } from "react";
 import WeatherForm from "./WeatherForm.jsx";
 import WeatherInfos from "./WeatherInfos.jsx";
 import Loader from "./loader.jsx";
+
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
+  const [error, setError] = useState("");
+
   const fetchWeatherData = async (city = "dakar") => {
-    // Variable API
     const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
     const apiUrl = import.meta.env.VITE_WEATHER_API_URL;
 
+    // ✅ Vérifie si la clé ou l'URL est manquante
+    if (!apiKey || !apiUrl) {
+      setError("Clé API ou URL manquante. Veuillez vérifier la configuration.");
+      return;
+    }
+
     try {
-      const response = await fetch(`${apiUrl}?key=${apiKey}&q=${city}`);
+      const response = await fetch(`${apiUrl}?key=${apiKey}&q=${city}&lang=fr`);
       if (!response.ok) {
-        throw new Error(
-          "Une erreur s'est produite lors de récupération des données"
-        );
+        throw new Error("Erreur lors de la récupération des données météo.");
       }
+
       const data = await response.json();
       setTimeout(() => {
         setWeather(data);
-      }, 1000);
-      console.log(data);
-      return data;
+        setError("");
+      }, 500);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError(
+        "Impossible de récupérer les données météo. Veuillez réessayer."
+      );
     }
   };
 
@@ -32,7 +41,7 @@ export default function WeatherApp() {
   }, []);
 
   useEffect(() => {
-    document.title = `Méteo | ${weather?.location.name ?? ""} `;
+    document.title = `Météo | ${weather?.location.name ?? ""}`;
   }, [weather]);
 
   const handleSearchCity = (city) => {
@@ -43,7 +52,22 @@ export default function WeatherApp() {
   return (
     <div className="container">
       <WeatherForm handleSearchCity={handleSearchCity} />
-      {weather ? <WeatherInfos weather={weather} /> : <Loader />}
+      {error && (
+        <p
+          style={{
+            color: "red",
+            backgroundColor: "#ffe6e6",
+            padding: "1rem",
+            borderRadius: "8px",
+            textAlign: "center",
+            fontWeight: "bold",
+            marginBottom: "1rem",
+          }}
+        >
+          {error}
+        </p>
+      )}
+      {weather ? <WeatherInfos weather={weather} /> : !error && <Loader />}
     </div>
   );
 }
