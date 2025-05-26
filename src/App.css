@@ -64,6 +64,7 @@ body {
   padding: 1rem;
   border-radius: 5px;
   transition: border-color 0.3s;
+  font-size: 24px;
 }
 
 .container form input:focus {
