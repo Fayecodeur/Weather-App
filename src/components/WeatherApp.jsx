@@ -11,28 +11,35 @@ export default function WeatherApp() {
     const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
     const apiUrl = import.meta.env.VITE_WEATHER_API_URL;
 
-    // ✅ Vérifie si la clé ou l'URL est manquante
     if (!apiKey || !apiUrl) {
       setError("Clé API ou URL manquante. Veuillez vérifier la configuration.");
-      return;
+      return false;
     }
 
     try {
       const response = await fetch(`${apiUrl}?key=${apiKey}&q=${city}&lang=fr`);
       if (!response.ok) {
-        throw new Error("Erreur lors de la récupération des données météo.");
+        throw new Error("Ville introuvable.");
       }
 
       const data = await response.json();
+
+      // Vérifie si l'API a renvoyé une erreur dans les données
+      if (data.error) {
+        setError("Ville introuvable.");
+        return false;
+      }
+
       setTimeout(() => {
         setWeather(data);
         setError("");
       }, 500);
+
+      return true;
     } catch (error) {
       console.error(error);
-      setError(
-        "Impossible de récupérer les données météo. Veuillez réessayer."
-      );
+      setError("Impossible de récupérer les données météo.");
+      return false;
     }
   };
 
@@ -44,9 +51,9 @@ export default function WeatherApp() {
     document.title = `Météo | ${weather?.location.name ?? ""}`;
   }, [weather]);
 
-  const handleSearchCity = (city) => {
+  const handleSearchCity = async (city) => {
     setWeather(null);
-    fetchWeatherData(city);
+    return await fetchWeatherData(city);
   };
 
   return (
