@@ -83,7 +83,6 @@ body {
 
 .container form button:hover {
   background: #007acc; 
-  transform: scale(1.05);
 }
 
 /* Card Name */
@@ -185,6 +184,42 @@ body {
 
 /* Responsive pour mobile */
 @media (max-width: 600px) {
+
+  .container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  gap: 1rem;
+  background: #e5f6ff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Form */
+.container form {
+  gap: 0.4rem;
+}
+
+.container form input {
+  font-size: 18px;
+}
+  
+
   .card-map {
     width: 100%;
     height: auto;
@@ -194,7 +229,7 @@ body {
 
   .card-map iframe {
     width: 100%;
-    height: 250px;
+    height: 300px;
     border: 0;
   }
 }
